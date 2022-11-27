@@ -4,5 +4,24 @@
   <p>
     {{ restaurant.name }}
   </p>
+  <p>
+    {{ restaurant.introduce }}
+  </p>
+  <div>
+    {% if restaurant.opentime|time:'A' == 'AM'%}
+    오전
+    {%else%}
+    오후
+    {%endif%}
+    {{ restaurant.opentime|time:'h:i'}}
+  </div>
+  <div>
+    {% if restaurant.closetime|time:'A' == 'AM'%}
+    오전
+    {%else%}
+    오후
+    {%endif%}
+    {{ restaurant.closetime|time:'h:i'}}
+  </div>
 </div>
 {% endblock %}

@@ -6,11 +6,27 @@
         {% csrf_token %}
         <div class="mb-3">
             <label for="name" class="form-label">식당 이름</label>
-            <input type="text" class="form-control" name="name" id="name" value="{{ form.name.value|default_if_none:'' }}">
+            <input type="text" class="form-control" name="name" id="name"
+                   value="{{ form.name.value|default_if_none:'' }}" required
+                   oninvalid="this.setCustomValidity('식당 이름을 입력하세요.')"
+                   oninput="setCustomValidity('')">
         </div>
         <div class="mb-3">
             <label for="introduce" class="form-label">식당 소개</label>
-            <textarea class="form-control" name = "introduce" id="introduce" rows="10" value="{{ form.introduce.value|default_if_none:'' }}"></textarea>
+            <textarea class="form-control" name = "introduce" id="introduce" rows="10"
+                      value="{{ form.introduce.value|default_if_none:'' }}" required
+                      oninvalid="this.setCustomValidity('식당 소개를 작성하세요.')"
+                      oninput="setCustomValidity('')"></textarea>
+        </div>
+        <div class="mb-3">
+            <div>
+                <label for="opentime" class="form-label">시작 시간</label>
+                <input class="form-control" type="time" name="opentime" id="opentime" value="{{form.opentime.value|time:'H:i' }}">
+            </div>
+            <div>
+                <label for="closetime" class="form-label">종료 시간</label>
+                <input class="form-control" type="time" name="closetime" id="closetime" value="{{form.closetime.value|time:'H:i' }}">
+            </div>
         </div>
         <button type="submit" class="btn btn-primary">등록하기</button>
     </form>

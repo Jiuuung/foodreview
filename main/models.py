@@ -4,6 +4,8 @@ from django.db import models
 class Restaurant(models.Model):
     name = models.CharField(max_length=100)
     introduce = models.TextField()
+    opentime=models.TimeField(blank=True, null=True)
+    closetime=models.TimeField(blank=True, null=True)
     #recommend = models.ManyToManyField
 
     def __str__(self):
