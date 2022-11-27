@@ -1,0 +1,41 @@
+<div id="navframe">
+    <div class="container-fluid">
+        <ul id="navfirst" class="nav justify-content-end" >
+            {% if not user.is_authenticated %}
+            <li id="login1" class="nav-item">
+                <a id="login" class="nav-link active" aria-current="page" href="{% url 'user:login' %}">로그인</a>
+            </li>
+            <li id="signup1" class="nav-item">
+                <a id="signup" class="nav-link active" aria-current="page" href="{% url 'user:signup' %}">회원가입</a>
+            </li>
+            {% else %}
+            <li id="mypage1" class="nav-item">
+                <a id="mypage" class="nav-link" href="{% url 'user:mypage' user.id %}">마이페이지</a>
+            </li>
+            <li id="logout1" class="nav-item">
+                <a id="logout" class="nav-link" href="{% url 'user:logout' %}">로그아웃</a>
+            </li>
+            {% endif %}
+        </ul>
+    </div>
+    <nav id= "navsecond" class="navbar navbar-expand-lg bg-light">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="{% url 'main:list' %}">Food Review</a>
+            <button class="navbar-toggler" type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#navbarSupportedContent"
+                    aria-controls="navbarSupportedContent"
+                    aria-expanded="false"
+                    aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">temp</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</div>
