@@ -1,8 +1,9 @@
+{% extends 'base.html' %}
 {% block content %}
 {% if restaurant_list %}
     <ul>
         {% for restaurant in restaurant_list %}
-        <li><a href="{% url 'main:detail' question.id %}">{{restaurant.name}}</a></li>
+        <li><a href="{% url 'main:detail' restaurant.id %}">{{restaurant.name}}</a></li>
         {% endfor %}
     </ul>
 {% else %}
@@ -10,5 +11,5 @@
        no restaurant
     </p>
 {% endif %}
-<button href="{% url 'main:restaurant_add' %}">식당 추가</button>
+<a href="{% url 'main:restaurant_add' %}">식당 추가</a>
 {% endblock %}

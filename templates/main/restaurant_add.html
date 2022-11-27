@@ -1,8 +1,18 @@
+{% extends 'base.html' %}
 {%block content%}
 <div>
     식당 추가 페이지 입니다.
-    <form action="post" >
-        <input type="text"
+    <form method="post">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label for="name" class="form-label">식당 이름</label>
+            <input type="text" class="form-control" name="name" id="name" value="{{ form.name.value|default_if_none:'' }}">
+        </div>
+        <div class="mb-3">
+            <label for="introduce" class="form-label">식당 소개</label>
+            <textarea class="form-control" name = "introduce" id="introduce" rows="10" value="{{ form.introduce.value|default_if_none:'' }}"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">등록하기</button>
     </form>
 </div>
 {% endblock %}
