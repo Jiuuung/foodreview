@@ -1,0 +1,14 @@
+{% block content %}
+{% if restaurant_list %}
+    <ul>
+        {% for restaurant in restaurant_list %}
+        <li><a href="{% url 'main:detail' question.id %}">{{restaurant.name}}</a></li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>
+       no restaurant
+    </p>
+{% endif %}
+<button href="{% url 'main:restaurant_add' %}">식당 추가</button>
+{% endblock %}
