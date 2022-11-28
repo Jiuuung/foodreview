@@ -10,7 +10,7 @@
             </li>
             {% else %}
             <li id="mypage1" class="nav-item">
-                <a id="mypage" class="nav-link" href="{% url 'user:login'%}">마이페이지</a>
+                <a id="mypage" class="nav-link" href="{% url 'user:mypage' user.id%}">마이페이지</a>
             </li>
             <li id="logout1" class="nav-item">
                 <a id="logout" class="nav-link" href="{% url 'user:logout' %}">로그아웃</a>
@@ -20,7 +20,7 @@
     </div>
     <nav id= "navsecond" class="navbar navbar-expand-lg bg-light">
         <div class="container-fluid">
-            <a class="navbar-brand" href="{% url 'main:list' %}">Food Review</a>
+            <a class="navbar-brand" href="{% url 'main:list' %}"><b>Food Review</b></a>
             <button class="navbar-toggler" type="button"
                     data-bs-toggle="collapse"
                     data-bs-target="#navbarSupportedContent"
@@ -32,7 +32,7 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link" href="#">temp</a>
+                        <a class="nav-link" href="{% url 'main:restaurant_add' %}">식당추가</a>
                     </li>
                 </ul>
             </div>

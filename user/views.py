@@ -2,7 +2,7 @@ import json
 from django.contrib.auth import authenticate, login, get_user_model
 from django.contrib.auth.views import LoginView
 from django.http import HttpResponse
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from user.forms import Customloginform, CreateUser
 
 # Create your views here.
@@ -40,3 +40,8 @@ def checknicknamemultiple(request):
 class CustomLogin(LoginView):
     redirect_authenticated_user = True
     authentication_form = Customloginform
+
+def mypage(request, user_id):
+    user=get_object_or_404(get_user_model(), pk=user_id)
+    context={'user':user}
+    return render(request, 'user/mypage.html',context)

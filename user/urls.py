@@ -10,4 +10,5 @@ urlpatterns=[
     path('signup/', views.signup , name='signup'),
     path('signupdone/',views.signupdone, name='signup_done'),
     path('checknickname/',views.checknicknamemultiple, name='checknicknamemultiple'),
+    path('mypage/<int:user_id>/',views.mypage, name='mypage'),
 ]

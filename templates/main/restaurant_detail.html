@@ -8,19 +8,11 @@
     {{ restaurant.introduce }}
   </p>
   <div>
-    {% if restaurant.opentime|time:'A' == 'AM'%}
-    오전
-    {%else%}
-    오후
-    {%endif%}
+    {{ restaurant.opentime|time:'A' }}
     {{ restaurant.opentime|time:'h:i'}}
   </div>
   <div>
-    {% if restaurant.closetime|time:'A' == 'AM'%}
-    오전
-    {%else%}
-    오후
-    {%endif%}
+    {{ restaurant.closetime|time:'A' }}
     {{ restaurant.closetime|time:'h:i'}}
   </div>
 </div>
