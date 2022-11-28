@@ -1,5 +1,7 @@
+import json
+
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponseNotAllowed
+from django.http import HttpResponseNotAllowed, HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from main.models import Restaurant, Review
 from main.form import RestaurantForm
@@ -50,3 +52,15 @@ def delete_res(request, restaurant_id):
         return redirect('main:list')
     else:
         return HttpResponseNotAllowed('Only Superuser is possible')
+
+@login_required(login_url='user:login')
+def restaurantrecommend(request):
+    restaurant=get_object_or_404(Restaurant, pk=request.POST.get('restaurant_id',None))
+    if restaurant.recommend.filter(id=request.user.id).exists():
+        restaurant.recommend.remove(request.user)
+        message="추천을 취소합니다."
+    else:
+        restaurant.recommend.add(request.user)
+        message="추천합니다."
+    context={'recommend_count':restaurant.recommend.count(), 'message':message}
+    return HttpResponse(json.dumps(context),content_type='application/json')

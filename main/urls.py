@@ -8,4 +8,5 @@ urlpatterns = [
     path('addres/', views.add_res, name='restaurant_add'),
     path('editres/<int:restaurant_id>/', views.edit_res, name ='restaurant_edit'),
     path('deleteres/<int:restaurant_id>/', views.delete_res, name ='restaurant_delete'),
+    path('recommendres/',views.restaurantrecommend, name='restaurant_recommend'),
 ]

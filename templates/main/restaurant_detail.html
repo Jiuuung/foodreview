@@ -20,7 +20,27 @@
     <a href="{% url 'main:restaurant_edit' restaurant.id %}" class="btn btn-primary">수정하기</a>
     <a href="{% url 'main:restaurant_delete' restaurant.id %}" class="btn btn-primary">삭제하기</a>
     {% endif %}
-    <button class="btn btn-primary recommendpost" name="{{post.id}}" id="recommendpost{{post.id}}">추천 {{ post.recommend.count }} </button>
+    <button class="btn btn-primary recommendres" name="{{restaurant.id}}" id="recommendres{{restaurant.id}}">추천 {{ restaurant.recommend.count }} </button>
   </div>
 </div>
+<script></script>
+<script>
+  $(".recommendres").click(function(){
+      var res_id = $(this).attr('name')
+      $.ajax({
+          type:"POST",
+          url:"{% url 'main:restaurant_recommend' %}",
+          data:{"restaurant_id":res_id, "csrfmiddlewaretoken":'{{csrf_token}}'},
+          datatype: "json",
+          success: function(response){
+              alert(response.message);
+              $("#recommendres"+res_id).html("추천 "+response.recommend_count);
+          },
+          error: function(response){
+              alert("문제가 발생하였습니다.");
+              window.location.replace("{%url 'main:list' %}");
+          },
+      });
+  })
+</script>
 {% endblock %}

@@ -1,4 +1,5 @@
 from django.db import models
+from config.settings import AUTH_USER_MODEL
 
 # Create your models here.
 class Restaurant(models.Model):
@@ -6,12 +7,13 @@ class Restaurant(models.Model):
     introduce = models.TextField()
     opentime=models.TimeField(blank=True, null=True)
     closetime=models.TimeField(blank=True, null=True)
-    #recommend = models.ManyToManyField
+    recommend = models.ManyToManyField(AUTH_USER_MODEL)
 
     def __str__(self):
         return self.title
 
 class Review(models.Model):
     restaurant = models.ForeignKey(Restaurant, on_delete=models.CASCADE)
+    reviewer=models.ForeignKey(AUTH_USER_MODEL, on_delete=models.CASCADE, null=True)
     content = models.TextField()
     create_date= models.DateTimeField()
