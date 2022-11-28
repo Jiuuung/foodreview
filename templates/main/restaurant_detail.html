@@ -15,5 +15,12 @@
     {{ restaurant.closetime|time:'A' }}
     {{ restaurant.closetime|time:'h:i'}}
   </div>
+  <div class="mb-3 text-end">
+    {% if request.user.is_superuser  %}
+    <a href="{% url 'main:restaurant_edit' restaurant.id %}" class="btn btn-primary">수정하기</a>
+    <a href="{% url 'main:restaurant_delete' restaurant.id %}" class="btn btn-primary">삭제하기</a>
+    {% endif %}
+    <button class="btn btn-primary recommendpost" name="{{post.id}}" id="recommendpost{{post.id}}">추천 {{ post.recommend.count }} </button>
+  </div>
 </div>
 {% endblock %}

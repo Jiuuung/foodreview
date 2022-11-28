@@ -13,10 +13,9 @@
         </div>
         <div class="mb-3">
             <label for="introduce" class="form-label">식당 소개</label>
-            <textarea class="form-control" name = "introduce" id="introduce" rows="10"
-                      value="{{ form.introduce.value|default_if_none:'' }}" required
+            <textarea class="form-control" name = "introduce" id="introduce" rows="10" required
                       oninvalid="this.setCustomValidity('식당 소개를 작성하세요.')"
-                      oninput="setCustomValidity('')"></textarea>
+                      oninput="setCustomValidity('')">{{ form.introduce.value|default_if_none:'' }} </textarea>
         </div>
         <div class="mb-3">
             <div>
