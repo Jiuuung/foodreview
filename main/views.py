@@ -3,7 +3,7 @@ import json
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseNotAllowed, HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
-from main.models import Restaurant, Review
+from main.models import Restaurant, Review, Menu
 from main.form import RestaurantForm
 
 # Create your views here.
@@ -23,6 +23,12 @@ def add_res(request):
         if form.is_valid():
             restaurant = form.save(commit=False) #모델에 다른 항목이 추가될 수 있기 때문에 우선은 이렇게 분리해둠.
             restaurant.save()
+            menulist= request.POST.getlist('menu[]')
+            pricelist = request.POST.getlist('price[]')
+            for menu,price in zip(menulist,pricelist):
+                menuinstance = Menu(restaurant=restaurant, food=menu, price=price)
+                menuinstance.save()
+
             return redirect('main:list')
     else:
         form = RestaurantForm

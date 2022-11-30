@@ -15,7 +15,7 @@
             <label for="introduce" class="form-label">식당 소개</label>
             <textarea class="form-control" name = "introduce" id="introduce" rows="10" required
                       oninvalid="this.setCustomValidity('식당 소개를 작성하세요.')"
-                      oninput="setCustomValidity('')">{{ form.introduce.value|default_if_none:'' }} </textarea>
+                      oninput="setCustomValidity('')">{{ form.introduce.value|default_if_none:'' }}</textarea>
         </div>
         <div class="mb-3">
             <div>
@@ -27,7 +27,61 @@
                 <input class="form-control" type="time" name="closetime" id="closetime" value="{{form.closetime.value|time:'H:i' }}">
             </div>
         </div>
+        <button type="button" class="btn btn-primary" id="menuadd">메뉴칸 추가하기</button>
+        <div class="mb-3" id="menubox">
+            <p id="menulist0">
+                메뉴: <input id="foodname0" required class = "name" name='menu[]' type='text'> 가격: <input id="foodprice0" class = "price" required name='price[]' type='text' placeholder='숫자만 입력하세요' onkeypress="checkdigit(event,this)"> <input type='button' value='삭제' onclick='remove(this)'>
+            </p>
+        </div>
         <button type="submit" class="btn btn-primary">등록하기</button>
     </form>
 </div>
+<script type="text/javascript"></script>
+<script>
+    var menunum=0;
+    const menubox = document.getElementById("menubox");
+    $("#menuadd").click(function(){
+            const newmenu=document.createElement("p");
+            newmenu.id='menulist'+menunum
+            menunum+=1;
+            newmenu.innerHTML="메뉴: <input id='foodname"+menunum+"'  class = 'name' name='menu[]' type='text' required> 가격: <input id='foodprice"+menunum+"'  class = 'price' name='price[]' type='text' required placeholder='숫자만 입력하세요' onkeypress='checkdigit(event, this)'> <input type='button' value='삭제' onclick='remove(this)'>";
+            menubox.appendChild(newmenu);
+        }
+    );
+    function remove(obj){
+        if(menunum==0){
+            alert("메뉴가 최소 1개는 있어야 합니다.");
+            return;
+        }
+        menunum-=1;
+        obj.parentNode.remove();
+    }
+    function checkdigit(evt, ele){
+      var theEvent = evt || window.event;
+      console.log(theEvent.type);
+      if (theEvent.type === 'paste') {
+          alert('붙여넣기를 지원하지 않습니다!');
+          theEvent.returnValue = false;
+          if(theEvent.preventDefault) theEvent.preventDefault();
+          return;
+          //key = event.clipboardData.getData('text/plain');
+      } else {
+          var key = theEvent.keyCode || theEvent.which;
+          key = String.fromCharCode(key);
+      }
+      if(ele.value.length>6){
+        alert("최대 7자리 까지 입력 가능합니다.");
+        theEvent.returnValue = false;
+        if(theEvent.preventDefault) theEvent.preventDefault();
+        return;
+      }
+      var regex = /[0-9]|\./;
+      if( !regex.test(key) ) {
+        theEvent.returnValue = false;
+        if(theEvent.preventDefault) theEvent.preventDefault();
+      }
+    }
+    //출처: https://stackoverflow.com/a/469419
+
+</script>
 {% endblock %}
