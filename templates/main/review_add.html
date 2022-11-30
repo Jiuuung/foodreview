@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block content %}
+<form method="post">
+    {% csrf_token %}
+    {% include 'form_errors.html' %}
+    {{form.as_p}}
+    <button type="submit" class="btn btn-primary">리뷰 등록</button>
+</form>
+{% endblock %}

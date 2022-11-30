@@ -23,4 +23,5 @@ class Review(models.Model):
     restaurant = models.ForeignKey(Restaurant, on_delete=models.CASCADE)
     reviewer=models.ForeignKey(AUTH_USER_MODEL, on_delete=models.CASCADE, null=True)
     content = models.TextField()
+    star=models.IntegerField(default=0)
     create_date= models.DateTimeField()

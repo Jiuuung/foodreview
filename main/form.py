@@ -12,3 +12,8 @@ class RestaurantForm(forms.ModelForm):
             'opentime':'시작시간',
             'closetime':'종료시간',
         }
+
+class ReviewForm(forms.ModelForm):
+    class Meta:
+        model = Review
+        fields = ['content', 'star',]

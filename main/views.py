@@ -4,7 +4,8 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseNotAllowed, HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from main.models import Restaurant, Review, Menu
-from main.form import RestaurantForm
+from django.utils import timezone
+from main.form import RestaurantForm, ReviewForm
 
 # Create your views here.
 def list(request):
@@ -70,3 +71,21 @@ def restaurantrecommend(request):
         message="추천합니다."
     context={'recommend_count':restaurant.recommend.count(), 'message':message}
     return HttpResponse(json.dumps(context),content_type='application/json')
+
+
+@login_required(login_url='user:login')
+def add_rev(request, restaurant_id):
+    restaurant=get_object_or_404(Restaurant, pk=restaurant_id)
+    if request.method=="POST":
+        form =ReviewForm(request.POST)
+        if form.is_valid():
+            review = form.save(commit=False)
+            review.restaurant=restaurant
+            review.reviewer=request.user
+            review.create_date=timezone.now()
+            review.save()
+            return redirect('main:detail', restaurant_id)
+    else:
+        form =ReviewForm()
+    context = {'form':form}
+    return render(request, 'main/review_add.html',context)

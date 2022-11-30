@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% block content %}
+<a href="{% url 'main:review_add' restaurant.id %}" class="btn btn-primary">리뷰 작성하기</a>
 <div>
   <p>
     {{ restaurant.name }}
@@ -18,6 +19,11 @@
   {% for menu in restaurant.menu_set.all %}
   {{ menu.food }} {{menu.price}}
   {% endfor %}
+  <p>
+    {% for review in restaurant.review_set.all %}
+      <p>{{ review.reviewer }} {{ review.content }} {{review.star}}</p>
+    {% endfor %}
+  </p>
   <div class="mb-3 text-end">
     {% if request.user.is_superuser  %}
     <a href="{% url 'main:restaurant_edit' restaurant.id %}" class="btn btn-primary">수정하기</a>
