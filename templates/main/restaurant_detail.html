@@ -20,6 +20,9 @@
   {{ menu.food }} {{menu.price}}
   {% endfor %}
   <p>
+    전체 평점: {{ total_score }}
+  </p>
+  <p>
     {% for review in restaurant.review_set.all %}
       <p>{{ review.reviewer }} {{ review.content }} {{review.star}}</p>
     {% endfor %}

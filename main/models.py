@@ -10,6 +10,7 @@ class Restaurant(models.Model):
     opentime=models.TimeField(blank=True, null=True)
     closetime=models.TimeField(blank=True, null=True)
     recommend = models.ManyToManyField(AUTH_USER_MODEL)
+    score =models.IntegerField(default=0)
 
     def __str__(self):
         return self.name

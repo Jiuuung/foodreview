@@ -15,7 +15,10 @@ def list(request):
 
 def detail(request, restaurant_id):
     restaurant = get_object_or_404(Restaurant, pk = restaurant_id)
-    context = {'restaurant': restaurant}
+    score=float(restaurant.score)
+    count = float(restaurant.review_set.count())
+    total_score= round(score/count,1)
+    context = {'restaurant': restaurant, 'total_score':total_score}
     return render(request, 'main/restaurant_detail.html', context)
 
 def add_res(request):
@@ -84,6 +87,8 @@ def add_rev(request, restaurant_id):
             review.reviewer=request.user
             review.create_date=timezone.now()
             review.save()
+            restaurant.score +=int(request.POST.get('star'))
+            restaurant.save()
             return redirect('main:detail', restaurant_id)
     else:
         form =ReviewForm()
