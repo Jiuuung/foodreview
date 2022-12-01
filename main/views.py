@@ -6,6 +6,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from main.models import Restaurant, Review, Menu
 from django.utils import timezone
 from main.form import RestaurantForm, ReviewForm
+from django.contrib.auth import get_user_model
 
 # Create your views here.
 def list(request):
@@ -96,6 +97,9 @@ def add_rev(request, restaurant_id):
             review = form.save(commit=False)
             review.restaurant=restaurant
             review.reviewer=request.user
+            user =get_object_or_404(get_user_model(), pk=request.user.id)
+            user.reviewcount=int(request.user.reviewcount + 1)
+            user.save()
             review.create_date=timezone.now()
             review.save()
             restaurant.score +=int(request.POST.get('star'))
@@ -134,7 +138,9 @@ def edit_rev(request, review_id):
 def delete_rev(request, review_id):
     review = get_object_or_404(Review, pk=review_id)
     if request.user==review.reviewer:
-
+        user = get_object_or_404(get_user_model(), pk=request.user.id)
+        user.reviewcount = int(request.user.reviewcount - 1)
+        user.save()
         restaurant_id=review.restaurant.id
         restaurant =get_object_or_404(Restaurant, pk=restaurant_id)
         restaurant.score-=int(review.star)
