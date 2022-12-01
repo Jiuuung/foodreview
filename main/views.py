@@ -17,7 +17,10 @@ def detail(request, restaurant_id):
     restaurant = get_object_or_404(Restaurant, pk = restaurant_id)
     score=float(restaurant.score)
     count = float(restaurant.review_set.count())
-    total_score= round(score/count,1)
+    if count!=0:
+        total_score= round(score/count,1)
+    else:
+        total_score=0
     context = {'restaurant': restaurant, 'total_score':total_score}
     return render(request, 'main/restaurant_detail.html', context)
 
@@ -46,11 +49,19 @@ def edit_res(request, restaurant_id):
         if request.method=="POST":
             form=RestaurantForm(request.POST, instance=restaurant)
             if form.is_valid():
-                form.save()
+                foodlist = restaurant.menu_set.all()
+                menulist = request.POST.getlist('menu[]')
+                pricelist = request.POST.getlist('price[]')
+                for menu in foodlist:
+                    menu.delete()
+                editres=form.save()
+                for menu, price in zip(menulist, pricelist):
+                    menuinstance = Menu(restaurant=editres, food=menu, price=price)
+                    menuinstance.save()
                 return redirect('main:detail', restaurant_id)
         else:
             form = RestaurantForm(instance=restaurant)
-        context={'form':form}
+        context={'form':form, 'menulist':restaurant.menu_set.all(), }
         return render(request, 'main/restaurant_add.html',context)
     else:
         return HttpResponseNotAllowed('Only Superuser is possible')

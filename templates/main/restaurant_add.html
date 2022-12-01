@@ -29,16 +29,31 @@
         </div>
         <button type="button" class="btn btn-primary" id="menuadd">메뉴칸 추가하기</button>
         <div class="mb-3" id="menubox">
+            {% if menulist %}
+                {% for menu in menulist %}
+                <p id="menulist{{forloop.counter}}">
+                    메뉴: <input id="foodname{{forloop.counter}}" required class = "name" name='menu[]' value="{{menu.food}}" type='text'> 가격: <input id="foodprice{{forloop.counter}}" class = "price" required name='price[]' value="{{menu.price}}" type='text' placeholder='숫자만 입력하세요' onkeypress="checkdigit(event,this)"> <input type='button' value='삭제' onclick='remove(this)'>
+                </p>
+                {% endfor %}
+            {% else %}
             <p id="menulist0">
                 메뉴: <input id="foodname0" required class = "name" name='menu[]' type='text'> 가격: <input id="foodprice0" class = "price" required name='price[]' type='text' placeholder='숫자만 입력하세요' onkeypress="checkdigit(event,this)"> <input type='button' value='삭제' onclick='remove(this)'>
             </p>
+            {% endif %}
         </div>
         <button type="submit" class="btn btn-primary">등록하기</button>
     </form>
 </div>
 <script type="text/javascript"></script>
 <script>
-    var menunum=0;
+    function parse(x){
+        const parsetemp=parseInt(x);
+        if (isNaN(parsetemp)) { return 0; }
+        return parsetemp;
+    }
+    var menunum=parse("{{ menulist.count }}");
+
+    console.log(menunum);
     const menubox = document.getElementById("menubox");
     $("#menuadd").click(function(){
             const newmenu=document.createElement("p");
@@ -82,6 +97,5 @@
       }
     }
     //출처: https://stackoverflow.com/a/469419
-
 </script>
 {% endblock %}
