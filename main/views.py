@@ -105,3 +105,41 @@ def add_rev(request, restaurant_id):
         form =ReviewForm()
     context = {'form':form}
     return render(request, 'main/review_add.html',context)
+
+@login_required(login_url='user:login')
+def edit_rev(request, review_id):
+    review=get_object_or_404(Review, pk=review_id)
+    if request.user == review.reviewer:
+        if request.method=="POST":
+            star=review.star
+            form =ReviewForm(request.POST, instance=review)
+            if form.is_valid():
+                restaurant = review.restaurant
+                editreview = form.save(commit=False)
+                editreview.create_date=timezone.now()
+                editreview.save()
+                restaurant.score -= int(star)
+                restaurant.score +=int(request.POST.get('star'))
+                restaurant.save()
+                return redirect('main:detail', restaurant.id)
+        else:
+            form =ReviewForm(instance=review)
+        context = {'form':form}
+        return render(request, 'main/review_add.html',context)
+    else:
+        return HttpResponseNotAllowed('Only Superuser is possible')
+
+
+@login_required(login_url='user:login')
+def delete_rev(request, review_id):
+    review = get_object_or_404(Review, pk=review_id)
+    if request.user==review.reviewer:
+
+        restaurant_id=review.restaurant.id
+        restaurant =get_object_or_404(Restaurant, pk=restaurant_id)
+        restaurant.score-=int(review.star)
+        restaurant.save()
+        review.delete()
+        return redirect('main:detail', restaurant_id)
+    else:
+        return HttpResponseNotAllowed('Only Superuser is possible')

@@ -9,7 +9,7 @@ class Restaurant(models.Model):
     introduce = models.TextField()
     opentime=models.TimeField(blank=True, null=True)
     closetime=models.TimeField(blank=True, null=True)
-    recommend = models.ManyToManyField(AUTH_USER_MODEL)
+    recommend = models.ManyToManyField(AUTH_USER_MODEL, blank=True)
     score =models.IntegerField(default=0)
 
     def __str__(self):

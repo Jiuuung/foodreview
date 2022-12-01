@@ -25,6 +25,10 @@
   <p>
     {% for review in restaurant.review_set.all %}
       <p>{{ review.reviewer }} {{ review.content }} {{review.star}}</p>
+      {% if request.user == review.reviewer %}
+      <a href="{% url 'main:review_edit' review.id %}" class="btn btn-primary">리뷰 수정</a>
+      <a href="{% url 'main:review_delete' review.id %}" class="btn btn-primary">리뷰 삭제</a>
+      {% endif %}
     {% endfor %}
   </p>
   <div class="mb-3 text-end">
