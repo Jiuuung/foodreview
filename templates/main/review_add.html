@@ -8,7 +8,7 @@
         <select class="form-select" aria-label="menu select" id="menu" name="menu">
             {% for menu in menulist %}
             {% if forloop.counter == form.menu.value %}
-            <option id="selected" selected>{{menu.food}}</option>
+            <option value="{{forloop.counter}}" selected>{{menu.food}}</option>
             {%else %}
             <option value="{{forloop.counter}}">{{menu.food}}</option>
             {%endif%}
