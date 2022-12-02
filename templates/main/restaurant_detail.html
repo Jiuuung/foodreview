@@ -1,42 +1,83 @@
 {% extends 'base.html' %}
 {% block content %}
-<a href="{% url 'main:review_add' restaurant.id %}" class="btn btn-primary">리뷰 작성하기</a>
-<div>
-  <p>
-    {{ restaurant.name }}
-  </p>
-  <p>
-    {{ restaurant.introduce }}
-  </p>
-  <div>
-    {{ restaurant.opentime|time:'A' }}
-    {{ restaurant.opentime|time:'h:i'}}
+<div class="main">
+  <div class="left">
   </div>
-  <div>
-    {{ restaurant.closetime|time:'A' }}
-    {{ restaurant.closetime|time:'h:i'}}
+  <div class="center">
+    <div class="card">
+      <div class="card-header text-center">
+        <ul class="nav nav-tabs card-header-tabs">
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="true" href="#">Active</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'main:review_add' restaurant.id %}">리뷰 작성하기</a>
+          </li>
+        </ul>
+      </div>
+      <div class="card-body">
+        <h3>
+          {{ restaurant.name }}
+        </h3>
+        <p style="border:solid 0.5px black;padding:10px; margin: 5px 0px; border-radius: 10px;">
+          {{ restaurant.introduce }}
+        </p>
+        <div>
+          시작시간: {{ restaurant.opentime|time:'A' }}
+          {{ restaurant.opentime|time:'h:i'|default:"정보가 없습니다."}}
+        </div>
+        <div>
+          종료시간: {{ restaurant.closetime|time:'A' }}
+          {{ restaurant.closetime|time:'h:i'|default:"정보가 없습니다."}}
+        </div>
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">메뉴</th>
+              <th scope="col">가격</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for menu in restaurant.menu_set.all %}
+            <tr>
+              <th scope="row">{{forloop.counter}}</th>
+              <td>{{ menu.food }}</td>
+              <td>{{menu.price}}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+        <b>
+          전체 평점: {{ total_score }}
+        </b>
+        <p>
+          {% for review in reviewlist %}
+          <div style="border:solid 0.5px black;padding:10px; margin: 5px 0px; border-radius: 10px;">
+              <p>작성자: {{ review.reviewer }}</p>
+              <p>메뉴: {{review.menu.food}}</p>
+              <p>평점: {{review.star}}</p>
+              리뷰: {{ review.content }}
+            <div style="margin:10px; text-align:right;">
+            {% if request.user == review.reviewer %}
+            <a href="{% url 'main:review_edit' review.id %}" class="btn btn-primary">리뷰 수정</a>
+            <a href="{% url 'main:review_delete' review.id %}" class="btn btn-primary">리뷰 삭제</a>
+            {% endif %}
+            </div>
+          </div>
+          {% endfor %}
+        </p>
+        <div class="mb-3 text-end">
+          {% if request.user.is_superuser  %}
+          <a href="{% url 'main:restaurant_edit' restaurant.id %}" class="btn btn-primary">수정하기</a>
+          <a href="{% url 'main:restaurant_delete' restaurant.id %}" class="btn btn-primary">삭제하기</a>
+          {% endif %}
+          <button class="btn btn-primary recommendres" name="{{restaurant.id}}" id="recommendres{{restaurant.id}}">추천 {{ restaurant.recommend.count }} </button>
+        </div>
+      </div>
+    </div>
   </div>
-  {% for menu in restaurant.menu_set.all %}
-  {{ menu.food }} {{menu.price}}
-  {% endfor %}
-  <p>
-    전체 평점: {{ total_score }}
-  </p>
-  <p>
-    {% for review in restaurant.review_set.all %}
-      <p>{{ review.reviewer }} {{ review.content }} {{review.star}}</p>
-      {% if request.user == review.reviewer %}
-      <a href="{% url 'main:review_edit' review.id %}" class="btn btn-primary">리뷰 수정</a>
-      <a href="{% url 'main:review_delete' review.id %}" class="btn btn-primary">리뷰 삭제</a>
-      {% endif %}
-    {% endfor %}
-  </p>
-  <div class="mb-3 text-end">
-    {% if request.user.is_superuser  %}
-    <a href="{% url 'main:restaurant_edit' restaurant.id %}" class="btn btn-primary">수정하기</a>
-    <a href="{% url 'main:restaurant_delete' restaurant.id %}" class="btn btn-primary">삭제하기</a>
-    {% endif %}
-    <button class="btn btn-primary recommendres" name="{{restaurant.id}}" id="recommendres{{restaurant.id}}">추천 {{ restaurant.recommend.count }} </button>
+  <div class="right">
   </div>
 </div>
 <script></script>

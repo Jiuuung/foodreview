@@ -19,11 +19,15 @@ class Menu(models.Model):
     restaurant= models.ForeignKey(Restaurant, on_delete=models.CASCADE, null=True)
     food=models.CharField(max_length=10)
     price=models.IntegerField(default=0)
+    def __str__(self):
+        return self.food
 
 class Review(models.Model):
-    restaurant = models.ForeignKey(Restaurant, on_delete=models.CASCADE)
+    restaurant = models.ForeignKey(Restaurant, on_delete=models.CASCADE, null=True)
     reviewer=models.ForeignKey(AUTH_USER_MODEL, on_delete=models.CASCADE, null=True)
     content = models.TextField()
     menu = models.ForeignKey(Menu, on_delete=models.CASCADE, null=True)
     star=models.FloatField(default=2.5)
     create_date= models.DateTimeField()
+    def __str__(self):
+        return self.reviewer

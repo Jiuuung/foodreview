@@ -22,24 +22,28 @@ def detail(request, restaurant_id):
         total_score= round(score/count,1)
     else:
         total_score=0
-    context = {'restaurant': restaurant, 'total_score':total_score}
+    context = {'restaurant': restaurant, 'reviewlist':restaurant.review_set.all(), 'total_score':total_score}
     return render(request, 'main/restaurant_detail.html', context)
 
 def add_res(request):
     if request.method=='POST':
         form = RestaurantForm(request.POST)
         if form.is_valid():
+            menulist = request.POST.getlist('menu[]')
+            pricelist = request.POST.getlist('price[]')
+            if not len(set(menulist))==len(menulist):
+                form.errors['__all__'] = form.error_class(["메뉴이름은 중복될 수 없습니다."])
+                context = {'form': form}
+                return render(request, 'main/restaurant_add.html', context)
             restaurant = form.save(commit=False) #모델에 다른 항목이 추가될 수 있기 때문에 우선은 이렇게 분리해둠.
             restaurant.save()
-            menulist= request.POST.getlist('menu[]')
-            pricelist = request.POST.getlist('price[]')
             for menu,price in zip(menulist,pricelist):
                 menuinstance = Menu(restaurant=restaurant, food=menu, price=price)
                 menuinstance.save()
-
             return redirect('main:list')
     else:
-        form = RestaurantForm
+        form = RestaurantForm()
+
     context={'form':form}
     return render(request, 'main/restaurant_add.html', context)
 
@@ -96,6 +100,8 @@ def add_rev(request, restaurant_id):
         form =ReviewForm(request.POST)
         if form.is_valid():
             review = form.save(commit=False)
+            menu=request.POST.get('menu')
+            review.menu=get_object_or_404(Menu, pk=menu)
             review.star=float(request.POST.get('star'))
             review.restaurant=restaurant
             review.reviewer=request.user
@@ -125,6 +131,8 @@ def edit_rev(request, review_id):
                 restaurant = review.restaurant
                 editreview = form.save(commit=False)
                 editreview.create_date=timezone.now()
+                menu = request.POST.get('menu')
+                editreview.menu = get_object_or_404(Menu, pk=menu)
                 editreview.star = float(request.POST.get('star'))
                 editreview.save()
                 restaurant.score -= float(star)

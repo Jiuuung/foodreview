@@ -1,6 +1,26 @@
 {% extends 'base.html' %}
 {% block content %}
-아이디: {{ user.username }}
-닉네임: {{ user.nickname }}
-리뷰 수:{{user.reviewcount }}
+<div class="main" style="margin:40px 0;">
+    <div class="left"></div>
+    <div class="center">
+        <table class="table" style="text-align:center;">
+            <tbody>
+                <tr>
+                    <th scope="row">아이디</th>
+                    <td>{{ user.username }}</td>
+                </tr>
+                <tr>
+                    <th scope="row">닉네임</th>
+                    <td>{{ user.nickname }}</td>
+                </tr>
+                <tr>
+                    <th scope="row">리뷰수</th>
+                    <td>{{user.reviewcount }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="right"></div>
+</div>
+
 {% endblock %}
