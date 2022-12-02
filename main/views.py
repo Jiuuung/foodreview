@@ -91,10 +91,12 @@ def restaurantrecommend(request):
 @login_required(login_url='user:login')
 def add_rev(request, restaurant_id):
     restaurant=get_object_or_404(Restaurant, pk=restaurant_id)
+    menulist=restaurant.menu_set.all()
     if request.method=="POST":
         form =ReviewForm(request.POST)
         if form.is_valid():
             review = form.save(commit=False)
+            review.star=float(request.POST.get('star'))
             review.restaurant=restaurant
             review.reviewer=request.user
             user =get_object_or_404(get_user_model(), pk=request.user.id)
@@ -102,17 +104,19 @@ def add_rev(request, restaurant_id):
             user.save()
             review.create_date=timezone.now()
             review.save()
-            restaurant.score +=int(request.POST.get('star'))
+            restaurant.score +=float(request.POST.get('star'))
             restaurant.save()
             return redirect('main:detail', restaurant_id)
     else:
         form =ReviewForm()
-    context = {'form':form}
+    context = {'form':form, 'menulist':menulist,}
     return render(request, 'main/review_add.html',context)
 
 @login_required(login_url='user:login')
 def edit_rev(request, review_id):
     review=get_object_or_404(Review, pk=review_id)
+    restaurant= get_object_or_404(Restaurant, pk=review.restaurant.id)
+    menulist = restaurant.menu_set.all()
     if request.user == review.reviewer:
         if request.method=="POST":
             star=review.star
@@ -121,14 +125,15 @@ def edit_rev(request, review_id):
                 restaurant = review.restaurant
                 editreview = form.save(commit=False)
                 editreview.create_date=timezone.now()
+                editreview.star = float(request.POST.get('star'))
                 editreview.save()
-                restaurant.score -= int(star)
-                restaurant.score +=int(request.POST.get('star'))
+                restaurant.score -= float(star)
+                restaurant.score +=float(request.POST.get('star'))
                 restaurant.save()
                 return redirect('main:detail', restaurant.id)
         else:
             form =ReviewForm(instance=review)
-        context = {'form':form}
+        context = {'form':form,'review':review, 'star':review.star, 'menulist':menulist,}
         return render(request, 'main/review_add.html',context)
     else:
         return HttpResponseNotAllowed('Only Superuser is possible')

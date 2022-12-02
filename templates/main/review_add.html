@@ -2,8 +2,37 @@
 {% block content %}
 <form method="post">
     {% csrf_token %}
-    {% include 'form_errors.html' %}
-    {{form.as_p}}
+    {%include 'form_errors.html'%}
+    <div class="mb-3">
+        <label for="menu" class="form-label">메뉴</label>
+        <select class="form-select" aria-label="menu select" id="menu" name="menu">
+            {% for menu in menulist %}
+            {% if forloop.counter == form.menu.value %}
+            <option id="selected" selected>{{menu.food}}</option>
+            {%else %}
+            <option value="{{forloop.counter}}">{{menu.food}}</option>
+            {%endif%}
+            {% endfor %}
+        </select>
+    </div>
+    <div class="mb-3">
+        <label class="form-label" for="content">리뷰</label>
+        <textarea class="form-control" name = "content" id="content" rows="10" required
+                  oninvalid="this.setCustomValidity('리뷰를 작성하세요.')"
+                  oninput="setCustomValidity('')">{{ form.content.value|default_if_none:'' }}</textarea>
+    </div>
+    <div class="mb-3">
+        <label for="star" class="form-label">평점(0~5)</label>
+        <input type="range" class="form-range" min="0" max="5" step="0.5" id="star" name="star" value="{{star|default:2.5}}">
+        <input type="text" id="startext" name="startext" disabled value="">
+    </div>
     <button type="submit" class="btn btn-primary">리뷰 등록</button>
 </form>
+<script type="text/javascript"></script>
+<script>
+$("#startext").val($("#star").val());
+    $("#star").change( function(){
+        $("#startext").val($("#star").val());
+    });
+</script>
 {% endblock %}

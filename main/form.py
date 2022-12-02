@@ -16,4 +16,9 @@ class RestaurantForm(forms.ModelForm):
 class ReviewForm(forms.ModelForm):
     class Meta:
         model = Review
-        fields = ['content', 'star',]
+        fields = ['menu','content',]
+
+        labels ={
+            'menu':'메뉴 선택',
+            'content':'리뷰',
+        }

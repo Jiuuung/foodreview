@@ -10,7 +10,7 @@ class Restaurant(models.Model):
     opentime=models.TimeField(blank=True, null=True)
     closetime=models.TimeField(blank=True, null=True)
     recommend = models.ManyToManyField(AUTH_USER_MODEL, blank=True)
-    score =models.IntegerField(default=0)
+    score =models.FloatField(default=0)
 
     def __str__(self):
         return self.name
@@ -24,5 +24,6 @@ class Review(models.Model):
     restaurant = models.ForeignKey(Restaurant, on_delete=models.CASCADE)
     reviewer=models.ForeignKey(AUTH_USER_MODEL, on_delete=models.CASCADE, null=True)
     content = models.TextField()
-    star=models.IntegerField(default=0)
+    menu = models.ForeignKey(Menu, on_delete=models.CASCADE, null=True)
+    star=models.FloatField(default=2.5)
     create_date= models.DateTimeField()
