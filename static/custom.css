@@ -1,30 +1,65 @@
-#navfirst { height: 30%;}
-#login, #signup, #login1, #join1 {height: 100%; padding: 0% 4px;}
-#logout1, #logout {height: 100%; padding: 0% 4px; }
-#mypage1, #mypage {height: 100%; padding: 0% 4px; }
-#navsecond{padding: 0; }
-#logo{ font-size:30px;}
-a {text-decoration:none;
- color:black;}
+#navfirst {
+    height: 30%;
+}
 
-div.main{
-    width:100%;
-    display:flex;
+#login,
+#signup,
+#login1,
+#join1 {
+    height: 100%;
+    padding: 0% 4px;
 }
-div.left{
-    flex:1;
+
+#logout1,
+#logout {
+    height: 100%;
+    padding: 0% 4px;
 }
-div.center{
-    float:left;
-    flex:3;
+
+#mypage1,
+#mypage {
+    height: 100%;
+    padding: 0% 4px;
 }
-div.right{
-float:left;
-    flex:1;
+
+#navsecond {
+    padding: 0;
 }
-#res_intro{
-    width:200px;
-    text-overflow: ellipsis; /*생략 문자를 표시해준다.*/
-    overflow: hidden; /*넘어간 부분 숨겨줌.*/
-    white-space: nowrap; /*텍스트 길이 초과시 다음 줄로 넘어가지 않게 막아줌.*/
+
+#logo {
+    font-size: 30px;
+}
+
+a {
+    text-decoration: none;
+    color: black;
+}
+
+div.main {
+    width: 100%;
+    display: flex;
+}
+
+div.left {
+    flex: 1;
+}
+
+div.center {
+    float: left;
+    flex: 3;
+}
+
+div.right {
+    float: left;
+    flex: 1;
+}
+
+#res_intro {
+    width: 200px;
+    text-overflow: ellipsis;
+    /*생략 문자를 표시해준다.*/
+    overflow: hidden;
+    /*넘어간 부분 숨겨줌.*/
+    white-space: nowrap;
+    /*텍스트 길이 초과시 다음 줄로 넘어가지 않게 막아줌.*/
 }
